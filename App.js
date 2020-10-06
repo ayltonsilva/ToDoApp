@@ -1,148 +1,117 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  SafeAreaView,
+  TextInput,
   StyleSheet,
-  ScrollView,
-  Button,
+  TouchableOpacity,
   View,
   Text,
-  StatusBar,
 } from 'react-native';
 
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Provider, connect } from 'react-redux';
+import { createStore } from 'redux';
+import usersReducer from './UsersReducer';
 
+const store = createStore(usersReducer);
 const Stack = createStackNavigator();
 
 
-function HomeScreen({ navigation, route }) {
-	return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => {
-          /* 1. Navigate to the Details route with params */
-          navigation.navigate('Details', {
-            itemId: 86,
-            otherParam: 'anything you want here',
-          });
-        }}
-      />
-			<Button
-				title="Update the title"
-				onPress={() => navigation.setOptions({ title: 'Updated!' })}
-			/>
-    </View>
-  );
-}
-
-function DetailsScreen({ route, navigation }) {
-	const { itemId } = route.params;
-  const { otherParam } = route.params;
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-			<Text>itemId: {JSON.stringify(itemId)}</Text>
-      <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-			<Button
-        title="Go to Details... again"
-        onPress={() =>
-          navigation.push('Details', {
-            itemId: Math.floor(Math.random() * 100),
-          })
-        }
-      />
-			<Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
-			<Button title="Go back" onPress={() => navigation.goBack()} />
-    </View>
-  );
+class HomeScreen extends Component {
+  render(){
+    return (
+      <View style={styles.container}>
+        <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
+        <Text>You have { this.props.users } users.</Text>
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="Email..." 
+            placeholderTextColor="#003f5c"
+          />
+        </View>
+        <View style={styles.inputView} >
+          <TextInput  
+              style={styles.inputText}
+              placeholder="Password..." 
+              placeholderTextColor="#003f5c"
+          />
+        </View>
+        <TouchableOpacity style={styles.loginBtn}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
 function App(){
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#f4511e',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      >
-        <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}
-          options={{ 
-            title: 'My home',
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator 
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
           }}
-        />
-        <Stack.Screen 
-          name="Details" 
-          component={DetailsScreen} 
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-);
+        >
+          <Stack.Screen 
+            name="Home" 
+            component={HomeScreen}
+            options={{ 
+              title: 'My home',
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  inputView:{
+    width:"80%",
+    backgroundColor:"#fff",
+    borderRadius:25,
+    height:50,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
   },
-  body: {
-    backgroundColor: Colors.white,
+  inputText:{
+    height:50,
+    color:"white"
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  loginBtn:{
+    width:"80%",
+    backgroundColor:"#fb5b5a",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
   },
 });
+
+const mapStateToProps = (state) => {
+  const { users } = state
+  return { users }
+};
+
+export const connectState = connect(mapStateToProps)(HomeScreen);
 
 export default App;
