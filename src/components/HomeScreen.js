@@ -1,35 +1,45 @@
 import React, { Component } from 'react';
 import {
   TextInput,
-  StyleSheet,
   TouchableOpacity,
+  Button,
+  StyleSheet,
   View,
   Text,
 } from 'react-native';
+import { connect } from 'react-redux';
 
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
-import { Provider, connect } from 'react-redux';
-import { createStore } from 'redux';
-import usersReducer from './UsersReducer';
-
-const store = createStore(usersReducer);
-const Stack = createStackNavigator();
-
+const { navigation } = this.props.navigation;
 
 class HomeScreen extends Component {
+  state = {
+    email: "",
+    password: "",
+  }
+  
+
+  onLogin (){
+    const user = {
+      email: "",
+      password: ""
+    };
+    user[email] = this.state.email;
+    user[password] = this.state.password;
+    this.props.onLogin(user);
+  } 
+
+
   render(){
     return (
       <View style={styles.container}>
         <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
-        <Text>You have { this.props.users } users.</Text>
+        <Text>You have { this.props.users.current.length } users.</Text>
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
             placeholder="Email..." 
             placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({email:text})}
           />
         </View>
         <View style={styles.inputView} >
@@ -37,42 +47,25 @@ class HomeScreen extends Component {
               style={styles.inputText}
               placeholder="Password..." 
               placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({password:text})}
           />
         </View>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity 
+          style={styles.loginBtn}
+          onPress={this.onLogin}
+        >
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
+        <Button
+        title="Go to Details"
+        onPress={() => {
+          /* 1. Navigate to the Details route with params */
+          navigation.navigate('Details');
+        }}
+      />
       </View>
     );
   }
-}
-
-function App(){
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator 
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        >
-          <Stack.Screen 
-            name="Home" 
-            component={HomeScreen}
-            options={{ 
-              title: 'My home',
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -93,7 +86,7 @@ const styles = StyleSheet.create({
   },
   inputText:{
     height:50,
-    color:"white"
+    color:"black"
   },
   loginBtn:{
     width:"80%",
@@ -107,11 +100,15 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapDispatchToProps = dispatch => ({
+  onLogin: (user) => {
+    dispatch(verifyUser(user));
+  },
+});
+
 const mapStateToProps = (state) => {
   const { users } = state
   return { users }
 };
 
-export const connectState = connect(mapStateToProps)(HomeScreen);
-
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

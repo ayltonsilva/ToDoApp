@@ -1,11 +1,23 @@
 import { combineReducers } from 'redux';
 
 const INITIAL_STATE = {
-  current: ["Ay", "Ya"],
+  current: {
+    email: "",
+    password: "",
+  },
   possible: [
-    'Alice',
-    'Bob',
-    'Sammy',
+    {
+      email: "alice@gmail.com",
+      password: "foobar",
+    },
+    {
+      email: "bob@gmail.com",
+      password: "foobar",
+    },
+    {
+      email: "sammy@gmail.com",
+      password: "foobar",
+    },
   ],
 };
 
@@ -30,6 +42,16 @@ const usersReducer = (state = INITIAL_STATE, action) => {
       // Finally, update the redux state
       const newState = { current, possible };
 
+      return newState;
+    case 'VERIFY_USER':
+      let i;
+      for(i in current){
+        if(i[email] == action.user[email] && i[password] == action.user[password]){
+          current[email] = action.user[email];
+          current[password] = action.user[password];
+        }
+      }
+      newState = { current, possible };
       return newState;
 
     default:

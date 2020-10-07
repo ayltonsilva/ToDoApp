@@ -4,3 +4,10 @@ export const addUser = usersIndex => (
     payload: usersIndex,
   }
 );
+
+export const verifyUser = user => (
+  {
+    type: 'VERIFY_USER',
+    user: user,
+  }
+);
