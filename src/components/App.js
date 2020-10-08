@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 
 import HomeScreen from './HomeScreen';
 import DetailsScreen from './DetailsScreen';
+import SignupScreen from './SignupScreen';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import usersReducer from '../store/UsersReducer';
+import rootReducer from '../store/rootReducer';
 
-const store = createStore(usersReducer);
+const store = createStore(rootReducer);
 const Stack = createStackNavigator();
 
 
@@ -40,6 +41,10 @@ function App(){
           <Stack.Screen 
             name="Details" 
             component={DetailsScreen} 
+				  />
+          <Stack.Screen 
+            name="Sign Up" 
+            component={SignupScreen} 
 				  />
         </Stack.Navigator>
       </NavigationContainer>

@@ -1,13 +1,14 @@
-export const addUser = usersIndex => (
-  {
+export function addUser (email) {
+  return {
     type: 'ADD_USER',
-    payload: usersIndex,
+    email: email,
   }
-);
+}
 
-export const verifyUser = user => (
-  {
+export function verifyUser(email) {
+  return {
     type: 'VERIFY_USER',
-    user: user,
+    email: email,
   }
-);
+}
+

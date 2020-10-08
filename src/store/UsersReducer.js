@@ -1,64 +1,43 @@
-import { combineReducers } from 'redux';
 
 const INITIAL_STATE = {
   current: {
     email: "",
-    password: "",
   },
-  possible: [
-    {
-      email: "alice@gmail.com",
-      password: "foobar",
-    },
-    {
-      email: "bob@gmail.com",
-      password: "foobar",
-    },
-    {
-      email: "sammy@gmail.com",
-      password: "foobar",
-    },
-  ],
+  available: [ "alice@gmail.com", "bob@gmail.com", "sammy@gmail.com"],
 };
 
 const usersReducer = (state = INITIAL_STATE, action) => {
+  const {
+    current,
+    available,
+  } = state;
   switch (action.type) {
     case 'ADD_USER':
-      // Pulls current and possible out of previous state
-      // We do not want to alter state directly in case
-      // another action is altering it at the same time
-      const {
-        current,
-        possible,
-      } = state;
+     
+      const addedUser = action.email;
 
-      // Pull user out of users.possible
-      // Note that action.payload === userIndex
-      const addedUser = possible.splice(action.payload, 1);
-
-      // And put user in users.current
-      current.push(addedUser);
+      // And put user in users.available
+      available.push(addedUser);
 
       // Finally, update the redux state
-      const newState = { current, possible };
-
-      return newState;
+      return {
+        ...state, 
+          current: {email: action.email}
+      }
     case 'VERIFY_USER':
       let i;
-      for(i in current){
-        if(i[email] == action.user[email] && i[password] == action.user[password]){
-          current[email] = action.user[email];
-          current[password] = action.user[password];
-        }
+      for(i in available){
+        if(available[i] == action.email)
+          return {
+            ...state, 
+              current: {email: action.email}
+          }
       }
-      newState = { current, possible };
-      return newState;
+      return state
 
     default:
       return state
   }
 };
 
-export default combineReducers({
-  users: usersReducer
-});
+export default usersReducer;

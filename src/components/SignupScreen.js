@@ -1,45 +1,49 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import {addUser} from '../store/UsersActions';
+
 import {
-  TextInput,
-  TouchableOpacity,
   Button,
   StyleSheet,
-  View,
   Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { connect } from 'react-redux';
-import {verifyUser} from '../store/UsersActions';
 
-class HomeScreen extends Component {
+class SignupScreen extends Component {
   constructor(){
     super();
     this.state = {
       email: "",
       password: "",
+      confirmPassword: "",
     }
-    this.onLogin = this.onLogin.bind(this);
+    this.onSignUp = this.onSignUp.bind(this);
   }
 
-  onLogin (navigation){
+  onSignUp(navigation){
     const expression = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     if(this.state.password.length > 8 && expression.test(this.state.email.toLowerCase())){
-      this.props.onLogin(this.state.email);
-      navigation.navigate('Details');
+      if (this.state.password == this.state.confirmPassword){
+        this.props.onSignUp(this.state.email);
+        navigation.navigate('Details');
+      }
+      else{
+        alert("Different passwords");
+      }
     }
     else{
       alert("Invalid email or password");
     }
-  } 
-
+  }
 
   render(){
     const { navigation } = this.props;
-    
-
     return (
-      <View style={styles.container}>
-        <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
-        <Text>You have { this.props.users.available.length } users.</Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 30, height:"10%" }}>Sign Up</Text>
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
@@ -60,40 +64,34 @@ class HomeScreen extends Component {
               onChangeText={text => this.setState({password:text})}
           />
         </View>
+        <View style={styles.inputView} >
+          <TextInput
+              secureTextEntry={true}
+              autoCorrect={false}  
+              style={styles.inputText}
+              placeholder="Confirm Password..." 
+              placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({confirmPassword:text})}
+          />
+        </View>
         <TouchableOpacity 
           style={styles.loginBtn}
           onPress={
-            () => this.onLogin(navigation) 
+            () => this.onSignUp(navigation) 
           }
         >
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.loginText}>Sign Up</Text>
         </TouchableOpacity>
-        <Button
-        title="Sign Up"
-        onPress={() => {
-          /* 1. Navigate to the Details route with params */
-          navigation.navigate('Sign Up');
-        }}
-      />
-        <Button
-        title="Go to Details"
-        onPress={() => {
-          /* 1. Navigate to the Details route with params */
-          navigation.navigate('Details');
-        }}
-      />
+        
+
+        <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+        <Button title="Go back" onPress={() => navigation.goBack()} />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   inputView:{
     width:"80%",
     backgroundColor:"ghostwhite",
@@ -120,8 +118,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: (email) => 
-    dispatch(verifyUser(email))
+  onSignUp: (email) => 
+    dispatch(addUser(email))
 
 });
 
@@ -130,4 +128,4 @@ const mapStateToProps = (state) => {
   return { users }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen);
