@@ -3,17 +3,18 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Button,
+  StyleSheet,
   View,
   Text,
 } from 'react-native';
 
 class DetailsScreen extends Component {
   render(){
-    const { navigation } = this.props;
+    const { navigation, currentUser } = this.props;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.titleView}>
         <Text>Details Screen</Text>
-        <Text>Current user: { this.props.users.current.email } </Text>
+        <Text>Current user: { currentUser.email } </Text>
 
         <Button
           title="Go to Details... again"
@@ -28,9 +29,16 @@ class DetailsScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { users } = state
-  return { users }
-};
+const styles = StyleSheet.create({
+  titleView: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center' 
+  },
+});
+
+const mapStateToProps = ({users}) => ({
+  currentUser: users.current
+});
 
 export default connect(mapStateToProps)(DetailsScreen);

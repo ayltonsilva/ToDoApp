@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
-import {verifyUser} from '../store/UsersActions';
+import {setUser} from '../store/UsersActions';
 
 class HomeScreen extends Component {
   constructor(){
@@ -17,13 +17,14 @@ class HomeScreen extends Component {
       email: "",
       password: "",
     }
-    this.onLogin = this.onLogin.bind(this);
   }
 
-  onLogin (navigation){
-    const expression = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if(this.state.password.length > 8 && expression.test(this.state.email.toLowerCase())){
-      this.props.onLogin(this.state.email);
+  onLogin = () => {
+    const { email } = this.state;
+    const {navigation, loginSucess, availableUsers} = this.props;
+
+    if(availableUsers.includes(email)){
+      loginSucess(email);
       navigation.navigate('Details');
     }
     else{
@@ -33,13 +34,13 @@ class HomeScreen extends Component {
 
 
   render(){
-    const { navigation } = this.props;
+    const { navigation, availableUsers } = this.props;
     
 
     return (
       <View style={styles.container}>
         <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
-        <Text>You have { this.props.users.available.length } users.</Text>
+        <Text>You have { availableUsers.length } users.</Text>
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
@@ -63,7 +64,7 @@ class HomeScreen extends Component {
         <TouchableOpacity 
           style={styles.loginBtn}
           onPress={
-            () => this.onLogin(navigation) 
+            () => this.onLogin() 
           }
         >
           <Text style={styles.loginText}>LOGIN</Text>
@@ -73,13 +74,6 @@ class HomeScreen extends Component {
         onPress={() => {
           /* 1. Navigate to the Details route with params */
           navigation.navigate('Sign Up');
-        }}
-      />
-        <Button
-        title="Go to Details"
-        onPress={() => {
-          /* 1. Navigate to the Details route with params */
-          navigation.navigate('Details');
         }}
       />
       </View>
@@ -120,14 +114,12 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: (email) => 
-    dispatch(verifyUser(email))
+  loginSucess: (email) => 
+    dispatch(setUser(email))
 
 });
-
-const mapStateToProps = (state) => {
-  const { users } = state
-  return { users }
-};
+const mapStateToProps = ({ users }) => ({
+  availableUsers : users.available
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

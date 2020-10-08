@@ -20,14 +20,16 @@ class SignupScreen extends Component {
       password: "",
       confirmPassword: "",
     }
-    this.onSignUp = this.onSignUp.bind(this);
   }
 
-  onSignUp(navigation){
+  onSignUp = () => {
+    const { password, email, confirmPassword } = this.state;
+    const {navigation, onSignUp} = this.props;
     const expression = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if(this.state.password.length > 8 && expression.test(this.state.email.toLowerCase())){
-      if (this.state.password == this.state.confirmPassword){
-        this.props.onSignUp(this.state.email);
+
+    if(password.length > 8 && expression.test(email.toLowerCase())){
+      if (password == confirmPassword){
+        onSignUp(this.state.email);
         navigation.navigate('Details');
       }
       else{
@@ -42,7 +44,7 @@ class SignupScreen extends Component {
   render(){
     const { navigation } = this.props;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.titleView}>
         <Text style={{ fontSize: 30, height:"10%" }}>Sign Up</Text>
         <View style={styles.inputView} >
           <TextInput  
@@ -77,7 +79,7 @@ class SignupScreen extends Component {
         <TouchableOpacity 
           style={styles.loginBtn}
           onPress={
-            () => this.onSignUp(navigation) 
+            () => this.onSignUp() 
           }
         >
           <Text style={styles.loginText}>Sign Up</Text>
@@ -92,6 +94,11 @@ class SignupScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  titleView: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center' 
+  },
   inputView:{
     width:"80%",
     backgroundColor:"ghostwhite",
@@ -123,9 +130,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-const mapStateToProps = (state) => {
-  const { users } = state
-  return { users }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen);
+export default connect(mapDispatchToProps)(SignupScreen);

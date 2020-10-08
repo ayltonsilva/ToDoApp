@@ -5,9 +5,9 @@ export function addUser (email) {
   }
 }
 
-export function verifyUser(email) {
+export function setUser(email) {
   return {
-    type: 'VERIFY_USER',
+    type: 'SET_USER',
     email: email,
   }
 }
