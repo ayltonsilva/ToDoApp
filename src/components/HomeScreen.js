@@ -22,10 +22,10 @@ class HomeScreen extends Component {
   onLogin = () => {
     const { email } = this.state;
     const {navigation, loginSucess, availableUsers} = this.props;
-
+    
     if(availableUsers.includes(email)){
       loginSucess(email);
-      navigation.navigate('Details');
+      navigation.navigate('To Do');
     }
     else{
       alert("Invalid email or password");
@@ -35,7 +35,6 @@ class HomeScreen extends Component {
 
   render(){
     const { navigation, availableUsers } = this.props;
-    
 
     return (
       <View style={styles.container}>
