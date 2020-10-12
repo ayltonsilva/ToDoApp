@@ -15,7 +15,7 @@ class TodoListScreen extends Component {
     const todosList = allTodos.map((todo, index) => 
       <Text key={index} style={styles.todoItem}>{todo}</Text>);
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
           <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
           { todosList }
         <TouchableOpacity 
