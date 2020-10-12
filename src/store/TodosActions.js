@@ -4,3 +4,10 @@ export function addTodo (todo) {
     todo: todo,
   }
 }
+
+export function removeTodo (todo) {
+  return {
+    type: 'REMOVE_TODO',
+    todo: todo,
+  }
+}

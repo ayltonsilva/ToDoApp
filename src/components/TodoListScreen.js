@@ -3,23 +3,44 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Button,
+  ScrollView,
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
 } from 'react-native';
 
+import { Icon } from 'react-native-elements';
+import {removeTodo} from '../store/TodosActions';
+
+
 class TodoListScreen extends Component {
+  onRemoveTodo = (todoItem) => {
+    const { removeTodo } = this.props;
+
+    removeTodo(todoItem);
+  } 
+
   render(){
     const { navigation, allTodos} = this.props;
-    const todosList = allTodos.map((todo, index) => 
-      <Text key={index} style={styles.todoItem}>{todo}</Text>);
+
     return (
-      <ScrollView style={styles.container}>
-          <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
-          {allTodos.map((todo, index) => (
-             <Text key={index} style={styles.todoItem}>{todo}</Text>))
-          }
+      <ScrollView contentContainerStyle={styles.container} >
+            <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
+            {allTodos.map((todo, index) => (
+              <View key={index} style = {{flexDirection: 'row'}}>
+                <Text style={styles.todoItem}>{todo} 
+                </Text>
+                <Icon 
+                  name="trash" 
+                  type="ionicon" 
+                  color='red' 
+                  style={{paddingLeft: 5, paddingTop: 12}}
+                  onPress={() => this.onRemoveTodo(todo)}
+                  />
+
+              </View>))
+            }
         <TouchableOpacity 
           style={styles.loginBtn}
           onPress={() => {
@@ -28,7 +49,7 @@ class TodoListScreen extends Component {
         >
           <Text>Add To Do</Text>
         </TouchableOpacity>
-      </View>  
+        </ScrollView>
     );
   }
 }
@@ -46,7 +67,7 @@ const styles = StyleSheet.create({
   },
   loginBtn:{
     width:"30%",
-    backgroundColor:"#fb5b5a",
+    backgroundColor:"green",
     borderRadius:25,
     height:50,
     alignItems:"center",
@@ -56,8 +77,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapDispatchToProps = dispatch => ({
+  removeTodo: (todo) => dispatch(removeTodo(todo))
+
+});
+
 const mapStateToProps = ({todos}) => ({
   allTodos: todos.todos,
 });
 
-export default connect(mapStateToProps)(TodoListScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListScreen);
