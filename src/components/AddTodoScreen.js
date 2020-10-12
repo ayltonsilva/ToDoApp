@@ -87,8 +87,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addTodo: (todo) => 
-    dispatch(addTodo(todo))
+    addTodo: (todo) => dispatch(addTodo(todo))
 
 });
 
