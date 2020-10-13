@@ -11,6 +11,10 @@ const todosReducer = (state = INITIAL_STATE, action) => {
       return {
           todos: [...todos, action.todo],
       }
+    case 'REMOVE_TODO':
+      return {
+          todos: state.todos.filter((todo, index) => index !== action.index)
+      }
 
     default:
       return state

@@ -24,7 +24,6 @@ class AddTodoScreen extends Component {
     const { navigation, addTodo } = this.props;
   
     addTodo(todo);
-    console.log("Hey");
     navigation.navigate('To Do');
   } 
   render(){
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
   },
   loginBtn:{
     width:"30%",
-    backgroundColor:"#fb5b5a",
+    backgroundColor:"green",
     borderRadius:25,
     height:50,
     alignItems:"center",
