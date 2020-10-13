@@ -5,9 +5,9 @@ export function addTodo (todo) {
   }
 }
 
-export function removeTodo (todo) {
+export function removeTodo (index) {
   return {
     type: 'REMOVE_TODO',
-    todo: todo,
+    index: index,
   }
 }

@@ -13,8 +13,9 @@ const todosReducer = (state = INITIAL_STATE, action) => {
       }
     case 'REMOVE_TODO':
       return {
-          ...state,
-          todos: todos.filter(item => item != action.todo),
+          todos: 
+            [...state.todos.slice(0, action.index),
+            ...state.todos.slice(action.index+1)]
       }
 
     default:

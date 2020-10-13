@@ -15,10 +15,10 @@ import {removeTodo} from '../store/TodosActions';
 
 
 class TodoListScreen extends Component {
-  onRemoveTodo = (todoItem) => {
+  onRemoveTodo = (index) => {
     const { removeTodo } = this.props;
 
-    removeTodo(todoItem);
+    removeTodo(index);
   } 
 
   render(){
@@ -36,7 +36,7 @@ class TodoListScreen extends Component {
                   type="ionicon" 
                   color='red' 
                   style={{paddingLeft: 5, paddingTop: 12}}
-                  onPress={() => this.onRemoveTodo(todo)}
+                  onPress={() => this.onRemoveTodo(index)}
                   />
 
               </View>))
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeTodo: (todo) => dispatch(removeTodo(todo))
+  removeTodo: (index) => dispatch(removeTodo(index))
 
 });
 
