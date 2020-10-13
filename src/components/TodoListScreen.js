@@ -29,8 +29,7 @@ class TodoListScreen extends Component {
             <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
             {allTodos.map((todo, index) => (
               <View key={index} style = {{flexDirection: 'row'}}>
-                <Text style={styles.todoItem}>{todo} 
-                </Text>
+                <Text style={styles.todoItem}>{todo}</Text>
                 <Icon 
                   name="trash" 
                   type="ionicon" 
