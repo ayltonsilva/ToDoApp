@@ -15,27 +15,34 @@ import {removeTodo, showTodos} from '../store/TodosActions';
 
 
 class TodoListScreen extends Component {
-  onRemoveTodo = (index) => {
-    const { removeTodo } = this.props;
+  componentDidMount(){
+    const { showTodos } = this.props;
+    showTodos();
+  }
 
-    removeTodo(index);
+  onRemoveTodo = (id) => {
+    const { removeTodo, showTodos } = this.props;
+
+    removeTodo(id);
+    showTodos();
   } 
 
   render(){
     const { navigation, allTodos} = this.props;
+    console.log(allTodos);
 
     return (
       <ScrollView contentContainerStyle={styles.container} >
             <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
-            {allTodos.map((todo, index) => (
-              <View key={index} style = {{flexDirection: 'row'}}>
-                <Text style={styles.todoItem}>{todo}</Text>
+            {allTodos.map(todo => (
+              <View key={todo.id} style = {{flexDirection: 'row'}}>
+                <Text style={styles.todoItem}>{todo.text}</Text>
                 <Icon 
                   name="trash" 
                   type="ionicon" 
                   color='red' 
                   style={{paddingLeft: 5, paddingTop: 12}}
-                  onPress={() => this.onRemoveTodo(index)}
+                  onPress={() => this.onRemoveTodo(todo.id)}
                   />
 
               </View>))
@@ -52,10 +59,7 @@ class TodoListScreen extends Component {
     );
   }
 
-  componentDidMount(){
-    const { showTodos } = this.props;
-    showTodos();
-  }
+
 }
 
 const styles = StyleSheet.create({
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeTodo: (index) => dispatch(removeTodo(index)),
+  removeTodo: (id) => dispatch(removeTodo(id)),
   showTodos: () => dispatch(showTodos())
 
 });

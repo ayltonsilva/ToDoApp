@@ -5,10 +5,10 @@ export function addTodoSuccess (todo) {
   }
 }
 
-export function removeTodo (index) {
+export function removeTodoSuccess (id) {
   return {
     type: 'REMOVE_TODO',
-    index: index,
+    id: id,
   }
 }
 
@@ -20,7 +20,7 @@ export function showTodosSuccess (todos){
 }
 
 export const addTodo = (text) => async (dispatch) => {
-  const URL = 'http://localhost:3000/addTodo';
+  const URL = 'http://localhost:3000/todos';
   const body = { todo: { text } }
   const options = {
     method: 'POST',
@@ -32,41 +32,38 @@ export const addTodo = (text) => async (dispatch) => {
   const dataJSON = await response.json();
 
   if(response.ok){
-    return dispatch(addTodoSuccess(dataJSON.text));
+    console.log(dataJSON);
+    return dispatch(addTodoSuccess(dataJSON));
   }
 }
 
-export const removingTodo = (text) => async (dispatch) => {
-  const URL = 'http://localhost:3000/removeTodo';
-  const body = { todo: { text } }
+export const removeTodo = (id) => async (dispatch) => {
+  const URL = `http://localhost:3000/todos/${id}`;
+
   const options = {
     method: 'DELETE',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' }
   }
 
   const response = await fetch(URL, options);
   const dataJSON = await response.json();
 
   if(response.ok){
-    return dispatch(removeTodoSuccess(dataJSON.text));
+    return dispatch(removeTodoSuccess(dataJSON.id));
   }
 }
 
 export const showTodos = () => async (dispatch) => {
   const URL = 'http://localhost:3000/todos';
-  const body = { todo: { text } }
+
   const options = {
     method: 'GET',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' }
   }
 
   const response = await fetch(URL, options);
   const dataJSON = await response.json();
 
   if(response.ok){
-    return dispatch(removeTodoSuccess(dataJSON.text));
+    return dispatch(showTodosSuccess(dataJSON));
   }
   else{
     console.log("Failed");

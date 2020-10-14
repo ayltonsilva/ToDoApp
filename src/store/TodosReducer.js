@@ -13,11 +13,11 @@ const todosReducer = (state = INITIAL_STATE, action) => {
       }
     case 'SHOW_TODOS':
       return {
-        todos: todos.map(todo => todo.text),
+        todos: action.todos,
       }
     case 'REMOVE_TODO':
       return {
-          todos: state.todos.filter((todo, index) => index !== action.index)
+          todos: state.todos.filter(todo => todo.id != action.id)
       }
 
     default:
