@@ -19,15 +19,15 @@ class AddTodoScreen extends Component {
       todo: "",
     }
   }
-  onAddTodo = () =>{
+  onAddTodo = async () =>{
     const { todo } = this.state;
     const { navigation, addTodo, showTodos } = this.props;
   
-    addTodo(todo);
-    if(showTodos()){
-      navigation.navigate('To Do');
-    }
+    await addTodo(todo);
+    await showTodos();
+    navigation.navigate('To Do');
   } 
+
   render(){
     const { navigation} = this.props;
 

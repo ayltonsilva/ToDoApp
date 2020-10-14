@@ -65,7 +65,4 @@ export const showTodos = () => async (dispatch) => {
   if(response.ok){
     return dispatch(showTodosSuccess(dataJSON));
   }
-  else{
-    console.log("Failed");
-  }
 }

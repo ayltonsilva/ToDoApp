@@ -20,11 +20,11 @@ class TodoListScreen extends Component {
     showTodos();
   }
 
-  onRemoveTodo = (id) => {
+  onRemoveTodo = async (id) => {
     const { removeTodo, showTodos } = this.props;
 
-    removeTodo(id);
-    showTodos();
+    await removeTodo(id);
+    await showTodos();
   } 
 
   render(){
@@ -34,15 +34,15 @@ class TodoListScreen extends Component {
     return (
       <ScrollView contentContainerStyle={styles.container} >
             <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
-            {allTodos.map(todo => (
-              <View key={todo.id} style = {{flexDirection: 'row'}}>
-                <Text style={styles.todoItem}>{todo.text}</Text>
+            {allTodos.map(({ id, text })=> (
+              <View key={id} style = {{flexDirection: 'row'}}>
+                <Text style={styles.todoItem}>{text}</Text>
                 <Icon 
                   name="trash" 
                   type="ionicon" 
                   color='red' 
                   style={{paddingLeft: 5, paddingTop: 12}}
-                  onPress={() => this.onRemoveTodo(todo.id)}
+                  onPress={() => this.onRemoveTodo(id)}
                   />
 
               </View>))
