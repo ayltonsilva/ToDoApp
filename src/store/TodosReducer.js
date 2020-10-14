@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  todos: [ "Get groceries", "Take Bob to school", "Play some music"],
+  todos: [],
 };
 
 const todosReducer = (state = INITIAL_STATE, action) => {
@@ -11,9 +11,13 @@ const todosReducer = (state = INITIAL_STATE, action) => {
       return {
           todos: [...todos, action.todo],
       }
+    case 'SHOW_TODOS':
+      return {
+        todos: action.todos,
+      }
     case 'REMOVE_TODO':
       return {
-          todos: state.todos.filter((todo, index) => index !== action.index)
+          todos: state.todos.filter(todo => todo.id != action.id)
       }
 
     default:

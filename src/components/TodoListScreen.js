@@ -11,31 +11,38 @@ import {
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';
-import {removeTodo} from '../store/TodosActions';
+import {removeTodo, showTodos} from '../store/TodosActions';
 
 
 class TodoListScreen extends Component {
-  onRemoveTodo = (index) => {
-    const { removeTodo } = this.props;
+  componentDidMount(){
+    const { showTodos } = this.props;
+    showTodos();
+  }
 
-    removeTodo(index);
+  onRemoveTodo = async (id) => {
+    const { removeTodo, showTodos } = this.props;
+
+    await removeTodo(id);
+    await showTodos();
   } 
 
   render(){
     const { navigation, allTodos} = this.props;
+    console.log(allTodos);
 
     return (
       <ScrollView contentContainerStyle={styles.container} >
             <Text style={{ fontSize: 30, height: "10%" }}>To Do</Text>
-            {allTodos.map((todo, index) => (
-              <View key={index} style = {{flexDirection: 'row'}}>
-                <Text style={styles.todoItem}>{todo}</Text>
+            {allTodos.map(({ id, text })=> (
+              <View key={id} style = {{flexDirection: 'row'}}>
+                <Text style={styles.todoItem}>{text}</Text>
                 <Icon 
                   name="trash" 
                   type="ionicon" 
                   color='red' 
                   style={{paddingLeft: 5, paddingTop: 12}}
-                  onPress={() => this.onRemoveTodo(index)}
+                  onPress={() => this.onRemoveTodo(id)}
                   />
 
               </View>))
@@ -51,6 +58,8 @@ class TodoListScreen extends Component {
         </ScrollView>
     );
   }
+
+
 }
 
 const styles = StyleSheet.create({
@@ -77,7 +86,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeTodo: (index) => dispatch(removeTodo(index))
+  removeTodo: (id) => dispatch(removeTodo(id)),
+  showTodos: () => dispatch(showTodos())
 
 });
 

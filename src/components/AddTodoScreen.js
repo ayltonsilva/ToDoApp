@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import {addTodo} from '../store/TodosActions';
+import {addTodo, showTodos} from '../store/TodosActions';
 
 import {
   Button,
@@ -19,13 +19,15 @@ class AddTodoScreen extends Component {
       todo: "",
     }
   }
-  onAddTodo = () =>{
+  onAddTodo = async () =>{
     const { todo } = this.state;
-    const { navigation, addTodo } = this.props;
+    const { navigation, addTodo, showTodos } = this.props;
   
-    addTodo(todo);
+    await addTodo(todo);
+    await showTodos();
     navigation.navigate('To Do');
   } 
+
   render(){
     const { navigation} = this.props;
 
@@ -86,7 +88,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addTodo: (todo) => dispatch(addTodo(todo))
+    addTodo: (todo) => dispatch(addTodo(todo)),
+    showTodos: () => dispatch(showTodos())
 
 });
 
