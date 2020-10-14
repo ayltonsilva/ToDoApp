@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  todos: [ "Get groceries", "Take Bob to school", "Play some music"],
+  todos: [],
 };
 
 const todosReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +10,10 @@ const todosReducer = (state = INITIAL_STATE, action) => {
     case 'ADD_TODO':
       return {
           todos: [...todos, action.todo],
+      }
+    case 'SHOW_TODOS':
+      return {
+        todos: todos.map(todo => todo.text),
       }
     case 'REMOVE_TODO':
       return {

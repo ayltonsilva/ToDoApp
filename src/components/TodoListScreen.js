@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';
-import {removeTodo} from '../store/TodosActions';
+import {removeTodo, showTodos} from '../store/TodosActions';
 
 
 class TodoListScreen extends Component {
@@ -22,7 +22,8 @@ class TodoListScreen extends Component {
   } 
 
   render(){
-    const { navigation, allTodos} = this.props;
+    const { navigation, allTodos, showTodos} = this.props;
+    //showTodos()
 
     return (
       <ScrollView contentContainerStyle={styles.container} >
@@ -77,7 +78,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeTodo: (index) => dispatch(removeTodo(index))
+  removeTodo: (index) => dispatch(removeTodo(index)),
+  showTodos: () => dispatch(showTodos())
 
 });
 

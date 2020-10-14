@@ -11,10 +11,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-community/async-storage';
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import rootReducer from '../store/rootReducer';
 
 const persistConfig = {
@@ -24,7 +24,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-const store = createStore(persistedReducer);
+const store = createStore(persistedReducer, applyMiddleware(thunk));
 const persistor = persistStore(store);
 const Stack = createStackNavigator();
 
