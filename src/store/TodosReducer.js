@@ -15,6 +15,10 @@ const todosReducer = (state = INITIAL_STATE, action) => {
       return {
         todos: action.todos,
       }
+    case 'EDIT_TODO':
+      return {
+        todos: state.todos.map(todo => todo.id == action.id ? todo:action )
+      }
     case 'REMOVE_TODO':
       return {
           todos: state.todos.filter(todo => todo.id != action.id)

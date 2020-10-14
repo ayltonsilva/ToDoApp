@@ -5,6 +5,7 @@ import DetailsScreen from './DetailsScreen';
 import SignupScreen from './SignupScreen';
 import TodoListScreen from './TodoListScreen';
 import AddTodoScreen from './AddTodoScreen';
+import EditTodoScreen from './EditTodoScreen';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -68,6 +69,10 @@ function App(){
             <Stack.Screen 
               name="Add To Do" 
               component={AddTodoScreen} 
+            />
+            <Stack.Screen 
+              name="Edit To Do" 
+              component={EditTodoScreen} 
             />
           </Stack.Navigator>
         </NavigationContainer>

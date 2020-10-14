@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import {addTodo, showTodos} from '../store/TodosActions';
+import { editTodo, showTodos } from '../store/TodosActions';
 
 import {
   Button,
@@ -12,28 +12,31 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-class AddTodoScreen extends Component {
+class EditTodoScreen extends Component {
   constructor(){
     super();
     this.state = {
       todo: "",
     }
   }
-  onAddTodo = async () =>{
+
+  onEditTodo = async (id) =>{
     const { todo } = this.state;
-    const { navigation, addTodo, showTodos } = this.props;
+    const { navigation, editTodo, showTodos } = this.props;
   
-    await addTodo(todo);
+    await editTodo(id, todo);
     await showTodos();
     navigation.navigate('To Do');
   } 
 
   render(){
-    const { navigation} = this.props;
+    const { navigation, route} = this.props;
+    const { itemId } = route.params;
+    console.log(itemId);
 
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 30, height:"10%" }}>Add To Do</Text>
+        <Text style={{ fontSize: 30, height:"10%" }}>Edit To Do</Text>
           <View style={styles.inputView} >
             <TextInput  
               style={styles.inputText}
@@ -46,7 +49,7 @@ class AddTodoScreen extends Component {
           </View>
         <TouchableOpacity 
           style={styles.loginBtn}
-          onPress={ () => this.onAddTodo()}
+          onPress={ () => this.onEditTodo(itemId)}
         >
           <Text>Confirm</Text>
         </TouchableOpacity>
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addTodo: (todo) => dispatch(addTodo(todo)),
+    editTodo: (id, todo) => dispatch(editTodo(id, todo)),
     showTodos: () => dispatch(showTodos())
 
 });
@@ -113,4 +116,4 @@ const mapStateToProps = ({todos}) => ({
   allTodos: todos.todos,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTodoScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTodoScreen);
