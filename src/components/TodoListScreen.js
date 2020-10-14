@@ -22,8 +22,7 @@ class TodoListScreen extends Component {
   } 
 
   render(){
-    const { navigation, allTodos, showTodos} = this.props;
-    //showTodos()
+    const { navigation, allTodos} = this.props;
 
     return (
       <ScrollView contentContainerStyle={styles.container} >
@@ -51,6 +50,11 @@ class TodoListScreen extends Component {
         </TouchableOpacity>
         </ScrollView>
     );
+  }
+
+  componentDidMount(){
+    const { showTodos } = this.props;
+    showTodos();
   }
 }
 
