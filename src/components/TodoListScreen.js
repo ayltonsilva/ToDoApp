@@ -38,6 +38,14 @@ class TodoListScreen extends Component {
               <View key={id} style = {{flexDirection: 'row'}}>
                 <Text style={styles.todoItem}>{text}</Text>
                 <Icon 
+                  name="pencil" 
+                  type="font-awesome" 
+                  style={{paddingLeft: 5, paddingTop: 12}}
+                  onPress={() => navigation.navigate('Edit To Do', {
+                  itemId: id,
+                  })}
+                  />
+                <Icon 
                   name="trash" 
                   type="ionicon" 
                   color='red' 
